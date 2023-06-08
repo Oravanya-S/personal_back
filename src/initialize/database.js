@@ -1,4 +1,4 @@
-const {sequelize, GroupColor, BagType, Color, Model } = require('../models');
+const {sequelize, GroupColor, BagType, Color, Model, Product } = require('../models');
 
 sequelize
   .sync({force: true})
@@ -25,14 +25,30 @@ sequelize
     ])
   }).then(() => {
     return Color.bulkCreate([
+      {name: "Dark black", hexcode: "#000000", groupColorId: 1},
       {name: "Dark gray", hexcode: "#4a4444", groupColorId: 4},
       {name: "Light gray", hexcode: "#eeeeee", groupColorId: 4},
       {name: "Dark red", hexcode: "#871108", groupColorId: 8},
       {name: "Light red", hexcode: "#ff1111", groupColorId: 8},
+      {name: "Pearl white", hexcode: "#ffffff", groupColorId: 10},
     ])
   }).then(() => {
     return Model.bulkCreate([
-      {name: "Jamie", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", hexcode: "#4a4444", bagTypeId: 2},
+      {name: "Jamie", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 2},
+      {name: "Charlotte", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 1},
+      {name: "Charlotte2", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 1},
+      {name: "Charlotte3", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 1},
+      {name: "Anissa", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 4},
+    ])
+  }).then(() => {
+    return Product.bulkCreate([
+      {price: 1590, stock: 30, modelId: 1, colorId: 2},
+      {price: 1590, stock: 30, modelId: 1, colorId: 3},
+      {price: 1690, stock: 20, modelId: 1, colorId: 4},
+      {price: 1390, stock: 30, modelId: 2, colorId: 2},
+      {price: 1290, stock: 20, modelId: 2, colorId: 5},
+      {price: 1590, stock: 15, modelId: 3, colorId: 1},
+
     ])
   }).then(()=>process.exit(0))
   .catch((err) => console.log(err.message));

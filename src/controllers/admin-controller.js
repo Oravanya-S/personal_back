@@ -9,18 +9,18 @@ exports.getGroupColor = async (req, res, next) => {
     }
 }
 
-exports.getColor = async (req, res, next) => {
+exports.getColors = async (req, res, next) => {
     try {
-        const result = await adminService.getColor()
+        const result = await adminService.getColors()
         res.json(result)
     } catch (err) {
         next(err)
     }
 }
 
-exports.getBagType = async (req, res, next) => {
+exports.getBagTypes = async (req, res, next) => {
     try {
-        const result = await adminService.getBagType()
+        const result = await adminService.getBagTypes()
         res.json(result)
     } catch (err) {
         next(err)

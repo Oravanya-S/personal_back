@@ -5,14 +5,15 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
+const authRoute = require("./routes/auth-route");
 const adminRoute = require("./routes/admin-route")
+// const userRoute = require("./routes/user-route")
+const modelRoute = require("./routes/model-route")
 
-// const authRoute = require("./routes/auth-route");
-// const userRoute = require("./routes/user-route");
 
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
-// const authenticate = require("./middlewares/authenticate")
+const authenticate = require("./middlewares/authenticate")
 
 const app = express();
 
@@ -35,10 +36,11 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: false })); --
 
 
+app.use("/auth", authRoute);
 app.use('/admin', adminRoute);
+// app.use('/users', userRoute);
+app.use('/models', modelRoute);
 
-// app.use("/auth", authRoute);
-// app.use("/users", userRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
