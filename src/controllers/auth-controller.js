@@ -17,6 +17,7 @@ exports.register = async (req, res, next) => {
       const user = await userService.createUser(value);
   
       const accessToken = tokenService.sign({ id: user.id });
+      console.log("Token", accessToken)
       res.status(200).json({ accessToken });
     } catch (err) {
       next(err);
