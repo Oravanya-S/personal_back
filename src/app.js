@@ -38,6 +38,7 @@ app.use(express.json());
 
 app.use("/auth", authRoute);
 app.use('/admin', adminRoute);
+// authenticate,
 // app.use('/users', userRoute);
 app.use('/models', modelRoute);
 
