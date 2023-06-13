@@ -1,4 +1,4 @@
-const { GroupColor, BagType, Color, Model } = require('../models')
+const { GroupColor, BagType, Color, Model, Product } = require('../models')
 
 //GroupColor
 exports.getGroupColor = () => GroupColor.findAll({
@@ -62,6 +62,32 @@ exports.DeleteModel = (id, payload) => Model.update(
         }
     })
 
+//Products
+exports.getProducts = () => Product.findAll({
+    where: {
+        status: 1
+    },
+    include: [{
+        model: Model,
+    }, {
+        model: Color
+    }],
+    order: [['createdAt', 'DESC']]
+})
+
+exports.AddProduct = product => Product.create(product)
+exports.UpdateProduct = (id, payload) => Product.update(
+    payload, {
+        where:{
+            id: id
+        }
+    })
+exports.DeleteProduct = (id, payload) => Product.update(
+    payload, {
+        where:{
+            id: id
+        }
+    })
 
 
 

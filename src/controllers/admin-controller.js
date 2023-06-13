@@ -1,4 +1,32 @@
+const fs = require("fs");
 const adminService = require('../services/admin-service')
+const uploadService = require("../services/upload-service");
+const { Product } = require("../models");
+const createError = require('../utils/create-error');
+
+exports.uploadImage = async (req, res, next) => {
+    const {id} = req.params
+    try {
+      if (!req.files.image) {
+        createError('profile image or cover image is required');
+      }
+  
+      const updateValue = {};
+      if (req.files.image) {
+        const result = await uploadService.upload(req.files.image[0].path);
+        updateValue.image = result.secure_url;
+      }
+  
+      await Product.update(updateValue, { where: { id: id } });
+      res.status(200).json(updateValue);
+    } catch (err) {
+      next(err);
+    } finally {
+      if (req.files.image) {
+        fs.unlinkSync(req.files.image[0].path);
+      }
+    }
+  };
 
 exports.getGroupColor = async (req, res, next) => {
     try {
@@ -134,6 +162,62 @@ exports.DeleteModel = async (req, res, next) => {
         next(err)
     }
 }
+
+//products
+
+exports.getProducts = async (req, res, next) => {
+    try {
+        const result = await adminService.getProducts()
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
+
+exports.AddProduct = async (req, res, next) => {
+    try {
+        const value = req.body
+        const result = await adminService.AddProduct(value)
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
+
+exports.UpdateProduct = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const payload = req.body
+        const result = await adminService.UpdateProduct(id, payload)
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
+
+exports.DeleteProduct = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const payload = {"status": 0}
+        const result = await adminService.DeleteProduct(id, payload)
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // exports.uploadImage = async (req, res, next) => {
 //     try {

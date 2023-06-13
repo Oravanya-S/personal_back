@@ -7,8 +7,8 @@ const rateLimit = require("express-rate-limit");
 
 const authRoute = require("./routes/auth-route");
 const adminRoute = require("./routes/admin-route")
-// const userRoute = require("./routes/user-route")
 const modelRoute = require("./routes/model-route")
+// const userRoute = require("./routes/user-route")
 
 
 const notFoundMiddleware = require("./middlewares/not-found");

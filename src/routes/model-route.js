@@ -4,6 +4,6 @@ const modelController = require('../controllers/model-controller')
 
 const router = express.Router()
 
-router.get('/', modelController.getModelsByBagType)
+router.get('/:id', modelController.getModelsByBagType)
 
 module.exports = router;
