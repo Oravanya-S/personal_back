@@ -17,6 +17,29 @@ exports.addCart = async (req, res, next) => {
     }
 }
 
+exports.checkout = async (req, res, next) => {
+    try {
+        const {userId} = req.body;
+        const allItem = await cartService.getCartByUserId(userId)
+        const cleanAllItem = JSON.parse(JSON.stringify(allItem))
+        const order = await cartService.createOrder(req.body)
+        const orderId = order.id
+        for(let el of cleanAllItem) {
+            const result = await cartService.createOrderItem({"orderId": orderId, "quantity": el.quantity, "productId": el.productId})
+            console.log(result)
+        }
+        const deleteAllCart = await cartService.deleteAllCart(userId)
+        res.json(deleteAllCart)
+
+    } catch (err) {
+        next(err)
+    }
+}
+
+
+
+
+
 exports.updateQuantity = async (req, res, next) => {
     try {
         const {userId, productId, quantity} = req.body;
@@ -48,5 +71,25 @@ exports.DeleteCart = async (req, res, next) => {
       next(err)
   }
 }
+
+exports.DeleteCart = async (req, res, next) => {
+  try {
+      const {id} = req.params
+      const result = await cartService.DeleteCart(id)
+      res.json(result)
+  } catch (err) {
+      next(err)
+  }
+}
+
+exports.getOrderByUserId = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const result = await cartService.getOrderByUserId(id)
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+  }
 
 

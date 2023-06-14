@@ -10,6 +10,8 @@ router.post('/', cartController.addCart)
 router.get('/:id', cartController.getCartByUserId)
 router.patch('/updateQuantity', cartController.updateQuantity)
 router.delete('/:id', cartController.DeleteCart)
+router.post('/checkout', cartController.checkout)
+router.get('/orders/:id', cartController.getOrderByUserId)
 
 
 

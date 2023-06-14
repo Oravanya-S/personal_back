@@ -1,4 +1,4 @@
-const {Product, Cart, Color, Model} = require('../models')
+const {Product, Cart, Color, Model, Order, OrderItem} = require('../models')
 const { Op } = require('sequelize')
 
 exports.getCartByUserId = (id) =>{ 
@@ -13,6 +13,20 @@ exports.getCartByUserId = (id) =>{
             },
             {
                 model: Model
+            }
+            ]
+        }]
+})}
+
+exports.getOrderByUserId = (id) =>{ 
+    return Order.findAll({
+        where:{
+            userId: id
+        },
+        include: [{
+            model: OrderItem,
+            include: [{
+                model: Product,
             }
             ]
         }]
@@ -46,6 +60,15 @@ exports.UpdateCart = (payload, userId, productId) => Cart.update(
 exports.DeleteCart = (id) => Cart.destroy({
     where:{
         id: id
+    }
+})
+
+exports.createOrder = (order) => Order.create(order)
+exports.createOrderItem = (orderitem) => OrderItem.create(orderitem)
+
+exports.deleteAllCart = (id) => Cart.destroy({
+    where:{
+        userId: id
     }
 })
 
