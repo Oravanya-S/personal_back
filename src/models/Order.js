@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
           },
+          phone: {
+            type: DataTypes.STRING,
+            allowNull: false,
+          },
           payment: {
             type: DataTypes.ENUM('POMPTPAY', 'CASH'),
             allowNull: false
