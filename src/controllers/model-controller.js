@@ -1,4 +1,4 @@
-const modelService = require('../services/model-services')
+const modelService = require('../services/model-service')
 
 exports.getModelsByBagType = async (req, res, next) => {
     try {

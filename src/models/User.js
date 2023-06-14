@@ -36,7 +36,11 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.INTEGER,
           allowNull: false,
           defaultValue: 2,
-        }
+        },
+        address: {
+          type: DataTypes.STRING,
+        },
+
       },
       {
         underscored: true

@@ -8,6 +8,7 @@ const rateLimit = require("express-rate-limit");
 const authRoute = require("./routes/auth-route");
 const adminRoute = require("./routes/admin-route")
 const modelRoute = require("./routes/model-route")
+const cartRoute = require("./routes/cart-route")
 // const userRoute = require("./routes/user-route")
 
 
@@ -41,6 +42,7 @@ app.use('/admin', adminRoute);
 // authenticate,
 // app.use('/users', userRoute);
 app.use('/models', modelRoute);
+app.use('/carts', authenticate, cartRoute )
 
 
 app.use(notFoundMiddleware);
