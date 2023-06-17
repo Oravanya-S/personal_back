@@ -18,20 +18,6 @@ exports.getCartByUserId = (id) =>{
         }]
 })}
 
-exports.getOrderByUserId = (id) =>{ 
-    return Order.findAll({
-        where:{
-            userId: id
-        },
-        include: [{
-            model: OrderItem,
-            include: [{
-                model: Product,
-            }
-            ]
-        }]
-})}
-
 exports.updateQuantity = (payload, userId, productId) => Cart.update(
     payload,{
         where:{

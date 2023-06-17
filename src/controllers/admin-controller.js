@@ -7,8 +7,8 @@ const createError = require('../utils/create-error');
 exports.uploadImage = async (req, res, next) => {
     const {id} = req.params
     try {
-      if (!req.files.image) {
-        createError('profile image or cover image is required');
+      if (!req.files) {
+        createError('Image is required', 400);
       }
   
       const updateValue = {};
@@ -134,6 +134,10 @@ exports.getModels = async (req, res, next) => {
 exports.AddModel = async (req, res, next) => {
     try {
         const value = req.body
+        const isModelExist = await adminService.checkModelExist(value.name);
+        if (isModelExist) {
+            createError('model already in use', 400);
+        }
         const result = await adminService.AddModel(value)
         res.json(result)
     } catch (err) {

@@ -10,7 +10,7 @@ const adminRoute = require("./routes/admin-route")
 const modelRoute = require("./routes/model-route")
 const cartRoute = require("./routes/cart-route")
 // const userRoute = require("./routes/user-route")
-
+const orderRoute = require("./routes/order-route")
 
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
@@ -43,7 +43,7 @@ app.use('/admin', adminRoute);
 // app.use('/users', userRoute);
 app.use('/models', modelRoute);
 app.use('/carts', authenticate, cartRoute )
-
+app.use('/orders', authenticate, orderRoute)
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

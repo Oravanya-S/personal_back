@@ -48,6 +48,17 @@ exports.getModels = () => Model.findAll({
     order: [['createdAt', 'DESC']]
 })
 
+exports.checkModelExist = async name => {
+    const existModel = await Model.findOne({
+      where: {
+        name: name,
+        status: 1
+      }
+    })
+    return !!existModel;
+  };
+
+
 exports.AddModel = model => Model.create(model)
 exports.UpdateModel = (id, payload) => Model.update(
     payload, {
