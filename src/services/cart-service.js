@@ -49,8 +49,9 @@ exports.DeleteCart = (id) => Cart.destroy({
     }
 })
 
-exports.createOrder = (order) => Order.create(order)
-exports.createOrderItem = (orderitem) => OrderItem.create(orderitem)
+exports.createOrder = (order, t) => Order.create(order, t)
+
+exports.createOrderItem = (orderitem, t) => OrderItem.create(orderitem, t)
 
 exports.deleteAllCart = (id) => Cart.destroy({
     where:{

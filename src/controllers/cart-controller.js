@@ -1,4 +1,5 @@
-const cartService = require('../services/cart-service')
+const cartService = require('../services/cart-service');
+const { sequelize } = require('../models');
 
 exports.addCart = async (req, res, next) => {
     try {
@@ -18,20 +19,22 @@ exports.addCart = async (req, res, next) => {
 }
 
 exports.checkout = async (req, res, next) => {
+    const t = await sequelize.transaction();
     try {
         const {userId} = req.body;
         const allItem = await cartService.getCartByUserId(userId)
         const cleanAllItem = JSON.parse(JSON.stringify(allItem))
-        const order = await cartService.createOrder(req.body)
+        const order = await cartService.createOrder(req.body, { transaction: t } )
         const orderId = order.id
         for(let el of cleanAllItem) {
-            const result = await cartService.createOrderItem({"orderId": orderId, "quantity": el.quantity, "productId": el.productId})
+            const result = await cartService.createOrderItem({"orderId": orderId, "quantity": el.quantity, "productId": el.productId}, { transaction: t })
             console.log(result)
         }
-        const deleteAllCart = await cartService.deleteAllCart(userId)
+        const deleteAllCart = await cartService.deleteAllCart(userId, { transaction: t })
+        await t.commit();
         res.json(deleteAllCart)
-
     } catch (err) {
+        await t.rollback();
         next(err)
     }
 }
