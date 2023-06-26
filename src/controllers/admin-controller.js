@@ -181,6 +181,7 @@ exports.getProducts = async (req, res, next) => {
 exports.AddProduct = async (req, res, next) => {
     try {
         const value = req.body
+        console.log("sssssss", value)
         const result = await adminService.AddProduct(value)
         res.json(result)
     } catch (err) {

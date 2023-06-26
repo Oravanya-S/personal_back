@@ -36,8 +36,6 @@ sequelize
     return Model.bulkCreate([
       {name: "Jamie", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 2},
       {name: "Charlotte", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 1},
-      {name: "Charlotte2", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 1},
-      {name: "Charlotte3", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 1},
       {name: "Anissa", brand: "Marietta", meterial: "leather", description: "26 cm x 17 cm x 6 cm", bagTypeId: 4},
     ])
   }).then(() => {

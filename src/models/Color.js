@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
         Color.hasMany(models.Product, {
           foreignKey: {
-            name: 'modelId',
+            name: 'colorId',
             allowNull: false
           },
           onDelete: 'RESTRICT'

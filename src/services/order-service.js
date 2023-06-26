@@ -1,4 +1,4 @@
-const {Product, Cart, Color, Model, Order, OrderItem} = require('../models')
+const {Product, Cart, Color, Model, Order, OrderItem, User} = require('../models')
 const { Op } = require('sequelize')
 
 exports.getOrderByUserId = (id) =>{ 
@@ -18,5 +18,25 @@ exports.getOrderByUserId = (id) =>{
                 }]
             }
             ]
+        }]
+})}
+
+
+exports.getOrderAll = () =>{ 
+    return Order.findAll({
+        order: [["createdAt", "DESC"]],
+        include: [{
+            model: OrderItem,
+            include: [{
+                model: Product,
+                include: [{
+                    model: Model
+                }, {
+                    model: Color
+                }]
+            }
+            ]
+        }, {
+            model: User,
         }]
 })}

@@ -1,7 +1,7 @@
 const express = require('express')
 
 const adminController = require('../controllers/admin-controller')
-const upload = require('../middlewares/upload')
+// const upload = require('../middlewares/upload')
 const router = express.Router()
 
 router.get('/groupcolor', adminController.getGroupColor)
@@ -26,13 +26,13 @@ router.put('/product/:id', adminController.UpdateProduct)
 router.delete('/product/:id', adminController.DeleteProduct)
 
 module.exports = router;
-router.patch(
-    '/image/:id',
-    upload.fields([
-      { name: 'image', maxCount: 1 },
-    ]),
-    adminController.uploadImage
-);
+// router.patch(
+//     '/image/:id',
+//     upload.fields([
+//       { name: 'image', maxCount: 1 },
+//     ]),
+//     adminController.uploadImage
+// );
 
 
 

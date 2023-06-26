@@ -9,3 +9,12 @@ exports.getOrderByUserId = async (req, res, next) => {
         next(err)
     }
   }
+
+exports.getOrderAll = async (req, res, next) => {
+    try {
+        const result = await orderService.getOrderAll()
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+  }
