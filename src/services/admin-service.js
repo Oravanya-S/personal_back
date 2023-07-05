@@ -86,11 +86,22 @@ exports.getProducts = () => Product.findAll({
     order: [['createdAt', 'DESC']]
 })
 
+exports.getProductById = (id) => Product.findOne({
+    where: {
+        id: id
+    },
+    include: [{
+        model: Model,
+    }, {
+        model: Color
+    }],
+})
+
 exports.AddProduct = product => Product.create(product)
-exports.UpdateProduct = (id, payload) => Product.update(
+exports.UpdateProduct = (payload) => Product.update(
     payload, {
         where:{
-            id: id
+            id: payload.id
         }
     })
 exports.DeleteProduct = (id, payload) => Product.update(

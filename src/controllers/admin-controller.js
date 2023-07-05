@@ -1,32 +1,33 @@
 const fs = require("fs");
+const cloudinary = require("../config/cloudinary");
 const adminService = require('../services/admin-service')
 const uploadService = require("../services/upload-service");
 const { Product } = require("../models");
 const createError = require('../utils/create-error');
 
-exports.uploadImage = async (req, res, next) => {
-    const {id} = req.params
-    try {
-      if (!req.files) {
-        createError('Image is required', 400);
-      }
+// exports.uploadImage = async (req, res, next) => {
+//     const {id} = req.params
+//     try {
+//       if (!req.files) {
+//         createError('Image is required', 400);
+//       }
   
-      const updateValue = {};
-      if (req.files.image) {
-        const result = await uploadService.upload(req.files.image[0].path);
-        updateValue.image = result.secure_url;
-      }
+//       const updateValue = {};
+//       if (req.files.image) {
+//         const result = await uploadService.upload(req.files.image[0].path);
+//         updateValue.image = result.secure_url;
+//       }
   
-      await Product.update(updateValue, { where: { id: id } });
-      res.status(200).json(updateValue);
-    } catch (err) {
-      next(err);
-    } finally {
-      if (req.files.image) {
-        fs.unlinkSync(req.files.image[0].path);
-      }
-    }
-  };
+//       await Product.update(updateValue, { where: { id: id } });
+//       res.status(200).json(updateValue);
+//     } catch (err) {
+//       next(err);
+//     } finally {
+//       if (req.files.image) {
+//         fs.unlinkSync(req.files.image[0].path);
+//       }
+//     }
+//   };
 
 exports.getGroupColor = async (req, res, next) => {
     try {
@@ -181,22 +182,44 @@ exports.getProducts = async (req, res, next) => {
 exports.AddProduct = async (req, res, next) => {
     try {
         const value = req.body
-        console.log("sssssss", value)
+        console.log("sssssssdddddddddddd", value)
+        if (!req.file) {
+            createError("image is required (back)")
+        }
+        if (req.file) {
+            const result = await uploadService.upload(req.file.path);
+            value.image = result.secure_url;
+            console.log(result.secure_url)
+        }
         const result = await adminService.AddProduct(value)
         res.json(result)
     } catch (err) {
         next(err)
+    } finally {
+        if (req.file) {
+          fs.unlinkSync(req.file.path);
+        }
     }
 }
 
 exports.UpdateProduct = async (req, res, next) => {
     try {
-        const {id} = req.params
+        // const {id} = req.params
         const payload = req.body
-        const result = await adminService.UpdateProduct(id, payload)
-        res.json(result)
+        if (req.file) {
+            const result = await uploadService.upload(req.file.path);
+            payload.image = result.secure_url;
+            console.log(result.secure_url)
+        }
+        const result = await adminService.UpdateProduct(payload)
+        const resultChange = await adminService.getProductById(payload.id)
+        res.json(resultChange)
     } catch (err) {
         next(err)
+    } finally {
+        if (req.file) {
+          fs.unlinkSync(req.file.path);
+        }
     }
 }
 
