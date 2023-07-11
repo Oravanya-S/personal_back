@@ -72,16 +72,6 @@ exports.DeleteCart = async (req, res, next) => {
   }
 }
 
-exports.DeleteCart = async (req, res, next) => {
-  try {
-      const {id} = req.params
-      const result = await cartService.DeleteCart(id)
-      res.json(result)
-  } catch (err) {
-      next(err)
-  }
-}
-
 
 
 

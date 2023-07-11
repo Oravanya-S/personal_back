@@ -1,5 +1,4 @@
 const {Product, Cart, Color, Model, Order, OrderItem} = require('../models')
-const { Op } = require('sequelize')
 
 exports.getCartByUserId = (id) =>{ 
     return Cart.findAll({

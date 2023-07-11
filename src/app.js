@@ -8,6 +8,7 @@ const rateLimit = require("express-rate-limit");
 const authRoute = require("./routes/auth-route");
 const adminRoute = require("./routes/admin-route")
 const modelRoute = require("./routes/model-route")
+const wishlistRoute = require("./routes/wishlist-route")
 const cartRoute = require("./routes/cart-route")
 const userRoute = require("./routes/user-route")
 const orderRoute = require("./routes/order-route")
@@ -41,6 +42,7 @@ app.use("/auth", authRoute);
 app.use('/admin', adminRoute);
 app.use('/user',authenticate, userRoute);
 app.use('/models', modelRoute);
+app.use('/wishlist', authenticate, wishlistRoute)
 app.use('/carts', authenticate, cartRoute )
 app.use('/orders', authenticate, orderRoute)
 

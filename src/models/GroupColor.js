@@ -9,8 +9,11 @@ module.exports = (sequelize, DataTypes) => {
           name: {
             type: DataTypes.STRING,
             allowNull: false
+          },
+          hexcode: {
+            type: DataTypes.STRING,
+            allowNull: false
           }
-          
         },
         {
           underscored: true,
