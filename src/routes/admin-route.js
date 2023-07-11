@@ -22,7 +22,6 @@ router.delete('/model/:id', adminController.DeleteModel)
 
 router.get('/products', adminController.getProducts)
 router.post('/product', upload.single("image"), adminController.AddProduct)
-// router.put('/product/:id', adminController.UpdateProduct)
 router.put('/product',  upload.single("image"), adminController.UpdateProduct)
 router.delete('/product/:id', adminController.DeleteProduct)
 

@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 1,
-          }
+          },
+          // stripeKey: {
+          //   type: DataTypes.STRING,
+          // }
         },
         {
           underscored: true,
@@ -48,6 +51,14 @@ module.exports = (sequelize, DataTypes) => {
           });
 
         Product.hasMany(models.Cart, {
+          foreignKey: {
+            name: 'productId',
+            allowNull: false
+          },
+          onDelete: 'RESTRICT'
+        });
+
+        Product.hasMany(models.Favorite, {
           foreignKey: {
             name: 'productId',
             allowNull: false

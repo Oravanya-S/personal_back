@@ -21,3 +21,10 @@ exports.getUserByEmail = async email => {
 };
 
 exports.getUserById = id => User.findByPk(id);
+
+exports.UpdateUser = (id, payload) => User.update(
+  payload, {
+      where:{
+          id: id
+      }
+  })

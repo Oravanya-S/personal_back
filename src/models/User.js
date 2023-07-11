@@ -37,10 +37,21 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
           defaultValue: 2,
         },
-        address: {
+        addressLine: {
           type: DataTypes.STRING,
         },
-
+        province: {
+          type: DataTypes.STRING,
+        },
+        amphoe: {
+          type: DataTypes.STRING,
+        },
+        tambon: {
+          type: DataTypes.STRING,
+        },
+        zipcode: {
+          type: DataTypes.STRING,
+        },
       },
       {
         underscored: true
@@ -49,6 +60,14 @@ module.exports = (sequelize, DataTypes) => {
   
     User.associate = models => {
       User.hasMany(models.Cart, {
+        foreignKey: {
+          name: 'userId',
+          allowNull: false
+        },
+        onDelete: 'RESTRICT'
+      });
+
+      User.hasMany(models.Favorite, {
         foreignKey: {
           name: 'userId',
           allowNull: false
@@ -67,3 +86,6 @@ module.exports = (sequelize, DataTypes) => {
   
     return User;
   };
+
+
+ 

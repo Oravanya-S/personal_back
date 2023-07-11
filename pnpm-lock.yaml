@@ -46,6 +46,9 @@ dependencies:
   sequelize:
     specifier: ^6.32.0
     version: 6.32.0(mysql2@3.3.3)
+  stripe:
+    specifier: ^12.12.0
+    version: 12.12.0
 
 packages:
 
@@ -1446,6 +1449,14 @@ packages:
     resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==}
     dependencies:
       safe-buffer: 5.1.2
+    dev: false
+
+  /stripe@12.12.0:
+    resolution: {integrity: sha512-aM9xfyDryiaf/qSWMtJaTMrlc/he3qyx3aVHMqOZqUiMdgTV6lt7tLpFrU0pG+QURm1LAP9GYZ+EcA17446YoQ==}
+    engines: {node: '>=12.*'}
+    dependencies:
+      '@types/node': 20.2.5
+      qs: 6.11.0
     dev: false
 
   /supports-color@5.5.0:
