@@ -24,4 +24,21 @@ exports.getModelsByBagType = (id) =>{
         ]
 })}
 
+exports.getProductById = (id) =>{ 
+    return Product.findOne({
+        where: {
+            id: id
+        },
+        include: [{
+            model: Model,
+            include: [{
+                model: BagType,
+            }]
+        },
+        {
+            model: Color
+        }
+        ]
+})}
+
 

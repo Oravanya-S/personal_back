@@ -22,5 +22,15 @@ const loginSchema = Joi.object({
     password: Joi.string().required()
   });
 
+const passwordSchema = Joi.object({
+  currentPassword: Joi.string().trim().required(),
+  newPassword: Joi.string()
+      .pattern(/^[a-zA-Z0-9]{6,30}$/)
+      .trim()
+      .required(),
+  confirmPassword: Joi.string().valid(Joi.ref('newPassword')).trim().strip()
+  });
+
 exports.validateRegister = validate(registerSchema);
 exports.validateLogin = validate(loginSchema);
+exports.validateChangePassword = validate(passwordSchema);
