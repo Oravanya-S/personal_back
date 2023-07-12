@@ -5,13 +5,13 @@ exports.getWishlistByUserId = (id) =>{
         where:{
             userId: id
         },
+        order: [['createdAt', 'DESC']],
         include: [
             {
                 model: Product,
                 where : {
                     status: 1
                 },
-                order: [['createdAt', 'DESC']],
                 include: [{
                     model: Color,
                 },
@@ -30,13 +30,13 @@ exports.getProductIdWishlistByUserId = (id) =>{
         where:{
             userId: id
         },
+        order: [['createdAt', 'DESC']],
         include: [
             {
                 model: Product,
                 where : {
                     status: 1
                 },
-                order: [['createdAt', 'DESC']],
                 include: [
                 {
                     model: Model,
