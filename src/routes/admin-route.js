@@ -25,6 +25,8 @@ router.post('/product', upload.single("image"), adminController.AddProduct)
 router.put('/product',  upload.single("image"), adminController.UpdateProduct)
 router.delete('/product/:id', adminController.DeleteProduct)
 
+router.get("/dashboard", adminController.getDashboard);
+
 module.exports = router;
 
 

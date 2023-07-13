@@ -2,8 +2,9 @@ const fs = require("fs");
 const cloudinary = require("../config/cloudinary");
 const adminService = require('../services/admin-service')
 const uploadService = require("../services/upload-service");
-const { Product } = require("../models");
+const { Product, sequelize } = require("../models");
 const createError = require('../utils/create-error');
+const { QueryTypes } = require("sequelize");
 
 exports.getGroupColor = async (req, res, next) => {
     try {
@@ -209,4 +210,17 @@ exports.DeleteProduct = async (req, res, next) => {
     }
 }
 
+
+exports.getDashboard = async (req, res, next) => {
+    try {
+        const dashboardGroupColor = await adminService.getDashboardGroupColor()
+        const dashboardEarning = await adminService.getDashboardEarning()
+        const dashboardNumBag = await adminService.getDashboardNumBag()
+        const dashboardCart = await adminService.getDashboardCart()
+        const dashboardFav = await adminService.getDashboardFav()
+        res.json({dashboardGroupColor, dashboardEarning, dashboardNumBag, dashboardCart, dashboardFav})
+    } catch (err) {
+        next(err)
+    }
+}
 
