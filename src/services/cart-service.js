@@ -5,6 +5,7 @@ exports.getCartByUserId = (id) =>{
         where:{
             userId: id
         },
+        order: [['createdAt', 'DESC']],
         include: [{
             model: Product,
             include: [{
