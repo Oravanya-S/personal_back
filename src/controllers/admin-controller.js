@@ -213,14 +213,14 @@ exports.DeleteProduct = async (req, res, next) => {
 
 exports.getDashboard = async (req, res, next) => {
     try {
-        const {date} = req.query
-        console.log("date", date)
-        const dashboardGroupColor = await adminService.getDashboardGroupColor(date)
-        const dashboardModel = await adminService.getDashboardModel(date)
-        const dashboardEarning = await adminService.getDashboardEarning(date)
-        const dashboardNumBag = await adminService.getDashboardNumBag(date)
-        const dashboardCart = await adminService.getDashboardCart(date)
-        const dashboardFav = await adminService.getDashboardFav(date)
+        const {startDate, endDate} = req.query
+        console.log("date", startDate, endDate)
+        const dashboardGroupColor = await adminService.getDashboardGroupColor(startDate, endDate)
+        const dashboardModel = await adminService.getDashboardModel(startDate, endDate)
+        const dashboardEarning = await adminService.getDashboardEarning(startDate, endDate)
+        const dashboardNumBag = await adminService.getDashboardNumBag(startDate, endDate)
+        const dashboardCart = await adminService.getDashboardCart(startDate, endDate)
+        const dashboardFav = await adminService.getDashboardFav(startDate, endDate)
         res.json({dashboardGroupColor, dashboardEarning, dashboardNumBag, dashboardCart, dashboardFav, dashboardModel})
     } catch (err) {
         next(err)

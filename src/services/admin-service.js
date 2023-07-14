@@ -132,9 +132,9 @@ exports.DeleteProduct = (id, payload) =>
     },
   });
 
-exports.getDashboardGroupColor = async (date) => {
+exports.getDashboardGroupColor = async (startDate, endDate) => {
   const dashboardGroupColor = await sequelize.query(
-    `SELECT gc.id, gc.name, gc.hexcode, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN colors c ON p.color_id = c.id LEFT JOIN group_colors gc ON c.group_color_id = gc.id  WHERE DATE(oi.created_at) = '${date}' group by gc.id order by total_quantity desc`,
+    `SELECT gc.id, gc.name, gc.hexcode, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN colors c ON p.color_id = c.id LEFT JOIN group_colors gc ON c.group_color_id = gc.id  WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}' group by gc.id order by total_quantity desc`,
     { type: QueryTypes.SELECT }
   );
   if(dashboardGroupColor.length > 6) {
@@ -148,9 +148,9 @@ exports.getDashboardGroupColor = async (date) => {
   return(dashboardGroupColor);
 };
 
-exports.getDashboardModel = async (date) => {
+exports.getDashboardModel = async (startDate, endDate) => {
     const dashboardModel = await sequelize.query(
-      `SELECT m.id, m.name, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN models m ON p.model_id = m.id WHERE DATE(oi.created_at) = '${date}' group by m.id order by total_quantity desc`,
+      `SELECT m.id, m.name, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN models m ON p.model_id = m.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}' group by m.id order by total_quantity desc`,
       { type: QueryTypes.SELECT }
     );
     if(dashboardModel.length > 6) {
@@ -164,33 +164,33 @@ exports.getDashboardModel = async (date) => {
     return(dashboardModel);
   };
 
-exports.getDashboardEarning = async (date) => {
+exports.getDashboardEarning = async (startDate, endDate) => {
     const Earning = await sequelize.query(
-      `SELECT SUM(oi.quantity*p.price) AS total_earning FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) = '${date}'`,
+      `SELECT SUM(oi.quantity*p.price) AS total_earning FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
       { type: QueryTypes.SELECT }
     );
     return(Earning[0]);
 };
 
-exports.getDashboardNumBag = async (date) => {
+exports.getDashboardNumBag = async (startDate, endDate) => {
     const NumBag = await sequelize.query(
-      `SELECT SUM(oi.quantity) AS total_bag FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) = '${date}'`,
+      `SELECT SUM(oi.quantity) AS total_bag FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
       { type: QueryTypes.SELECT }
     );
     return(NumBag[0]);
 };
 
-exports.getDashboardCart = async (date) => {
+exports.getDashboardCart = async (startDate, endDate) => {
     const NumCart = await sequelize.query(
-      `SELECT SUM(c.quantity) AS total_cart FROM carts c WHERE DATE(c.created_at) = '${date}'`,
+      `SELECT SUM(c.quantity) AS total_cart FROM carts c WHERE DATE(c.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
       { type: QueryTypes.SELECT }
     );
     return(NumCart[0]);
 };
 
-exports.getDashboardFav = async (date) => {
+exports.getDashboardFav = async (startDate, endDate) => {
   const NumFav = await sequelize.query(
-    `SELECT COUNT(f.id) AS total_fav FROM favorites f WHERE DATE(f.created_at) = '${date}'`,
+    `SELECT COUNT(f.id) AS total_fav FROM favorites f WHERE DATE(f.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
     { type: QueryTypes.SELECT }
   );
   return NumFav[0];
