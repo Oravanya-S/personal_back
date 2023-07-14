@@ -132,9 +132,9 @@ exports.DeleteProduct = (id, payload) =>
     },
   });
 
-exports.getDashboardGroupColor = async () => {
+exports.getDashboardGroupColor = async (date) => {
   const dashboardGroupColor = await sequelize.query(
-    "SELECT gc.id, gc.name, gc.hexcode, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN colors c ON p.color_id = c.id LEFT JOIN group_colors gc ON c.group_color_id = gc.id group by gc.id order by total_quantity desc",
+    `SELECT gc.id, gc.name, gc.hexcode, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN colors c ON p.color_id = c.id LEFT JOIN group_colors gc ON c.group_color_id = gc.id  WHERE DATE(oi.created_at) = '${date}' group by gc.id order by total_quantity desc`,
     { type: QueryTypes.SELECT }
   );
   if(dashboardGroupColor.length > 6) {
@@ -148,9 +148,9 @@ exports.getDashboardGroupColor = async () => {
   return(dashboardGroupColor);
 };
 
-exports.getDashboardModel = async () => {
+exports.getDashboardModel = async (date) => {
     const dashboardModel = await sequelize.query(
-      "SELECT m.id, m.name, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN models m ON p.model_id = m.id group by m.id order by total_quantity desc",
+      `SELECT m.id, m.name, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN models m ON p.model_id = m.id WHERE DATE(oi.created_at) = '${date}' group by m.id order by total_quantity desc`,
       { type: QueryTypes.SELECT }
     );
     if(dashboardModel.length > 6) {
@@ -164,34 +164,34 @@ exports.getDashboardModel = async () => {
     return(dashboardModel);
   };
 
-exports.getDashboardEarning = async () => {
+exports.getDashboardEarning = async (date) => {
     const Earning = await sequelize.query(
-      "SELECT SUM(oi.quantity*p.price) AS total_earning FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id",
+      `SELECT SUM(oi.quantity*p.price) AS total_earning FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) = '${date}'`,
       { type: QueryTypes.SELECT }
     );
     return(Earning[0]);
 };
 
-exports.getDashboardNumBag = async () => {
+exports.getDashboardNumBag = async (date) => {
     const NumBag = await sequelize.query(
-      "SELECT SUM(oi.quantity) AS total_bag FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id",
+      `SELECT SUM(oi.quantity) AS total_bag FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) = '${date}'`,
       { type: QueryTypes.SELECT }
     );
     return(NumBag[0]);
 };
 
-exports.getDashboardCart = async () => {
+exports.getDashboardCart = async (date) => {
     const NumCart = await sequelize.query(
-      "SELECT SUM(c.quantity) AS total_cart FROM carts c",
+      `SELECT SUM(c.quantity) AS total_cart FROM carts c WHERE DATE(c.created_at) = '${date}'`,
       { type: QueryTypes.SELECT }
     );
     return(NumCart[0]);
 };
 
-exports.getDashboardFav = async () => {
-    const NumFav = await sequelize.query(
-      "SELECT COUNT(f.id) AS total_fav FROM favorites f",
-      { type: QueryTypes.SELECT }
-    );
-    return(NumFav[0]);
+exports.getDashboardFav = async (date) => {
+  const NumFav = await sequelize.query(
+    `SELECT COUNT(f.id) AS total_fav FROM favorites f WHERE DATE(f.created_at) = '${date}'`,
+    { type: QueryTypes.SELECT }
+  );
+  return NumFav[0];
 };
