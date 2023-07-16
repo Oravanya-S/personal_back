@@ -5,7 +5,9 @@ const uploadService = require("../services/upload-service");
 const { Product, sequelize } = require("../models");
 const createError = require('../utils/create-error');
 const { QueryTypes } = require("sequelize");
-
+const stripe = require("stripe")(
+    process.env.STRIPE_KEY
+);
 exports.getGroupColor = async (req, res, next) => {
     try {
         const result = await adminService.getGroupColor()
@@ -159,7 +161,8 @@ exports.getProducts = async (req, res, next) => {
 exports.AddProduct = async (req, res, next) => {
     try {
         const value = req.body
-        console.log("sssssssdddddddddddd", value)
+        console.log("value of add product", value)
+
         if (!req.file) {
             createError("image is required (back)")
         }
@@ -168,8 +171,25 @@ exports.AddProduct = async (req, res, next) => {
             value.image = result.secure_url;
             console.log(result.secure_url)
         }
-        const result = await adminService.AddProduct(value)
-        res.json(result)
+        const product = await adminService.AddProduct(value)
+        const results = await stripe.products.create({
+            name: product.id,
+            default_price_data: {
+              currency: "THB",
+              unit_amount_decimal: value.price,
+            },
+            images: [product.image],
+          });
+      
+          const resultStripe = await adminService.UpdateProduct(
+            { id: product.id, 
+              productDefaultPrice: results.default_price},
+          );
+          
+          const lastResult = {...product.dataValues, productDefaultPrice: results.default_price}
+          console.log(lastResult)
+
+        res.json(lastResult)
     } catch (err) {
         next(err)
     } finally {
@@ -214,7 +234,6 @@ exports.DeleteProduct = async (req, res, next) => {
 exports.getDashboard = async (req, res, next) => {
     try {
         const {startDate, endDate} = req.query
-        console.log("date", startDate, endDate)
         const dashboardGroupColor = await adminService.getDashboardGroupColor(startDate, endDate)
         const dashboardModel = await adminService.getDashboardModel(startDate, endDate)
         const dashboardEarning = await adminService.getDashboardEarning(startDate, endDate)

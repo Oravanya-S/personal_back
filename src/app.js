@@ -12,6 +12,7 @@ const wishlistRoute = require("./routes/wishlist-route")
 const cartRoute = require("./routes/cart-route")
 const userRoute = require("./routes/user-route")
 const orderRoute = require("./routes/order-route")
+const paymentRoute = require("./routes/payment-route")
 
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
@@ -45,6 +46,7 @@ app.use('/models', modelRoute);
 app.use('/wishlist', authenticate, wishlistRoute)
 app.use('/carts', authenticate, cartRoute )
 app.use('/orders', authenticate, orderRoute)
+app.use('/payment', paymentRoute)
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

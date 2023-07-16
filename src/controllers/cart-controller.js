@@ -1,5 +1,6 @@
 const cartService = require('../services/cart-service');
-const { sequelize } = require('../models');
+const uploadService = require("../services/upload-service")
+const { Payment, sequelize } = require('../models');
 
 exports.addCart = async (req, res, next) => {
     try {
@@ -72,6 +73,25 @@ exports.DeleteCart = async (req, res, next) => {
   }
 }
 
+//create payment
+exports.createPayment = async (req, res, next) => {
+  
+    try {
+      const value  = req.body;
+      console.log('first', value)
+      console.log('---------------------------------------',req.file)
+      const result = await uploadService.upload(req.file.path);
+      value.image = result.secure_url;
+      value.userId = req.user.id;
+      const payment = await Payment.create(value)
+      console.log('########',value)
+      res.status(200).json(payment)
+  
+    } catch (err) {
+      next(err);
+    }
+  
+  };
 
 
 

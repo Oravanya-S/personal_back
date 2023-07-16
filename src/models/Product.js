@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 1,
           },
-          // stripeKey: {
-          //   type: DataTypes.STRING,
-          // }
+          productDefaultPrice: {
+            type: DataTypes.STRING,
+          }
         },
         {
           underscored: true,
