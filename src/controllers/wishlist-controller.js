@@ -15,7 +15,6 @@ exports.getProductIdWishlistByUserId = async (req, res, next) => {
   try {
       const { id } = req.params
       const result = await wishlistService.getProductIdWishlistByUserId(id)
-      console.log("rusult")
       const pdArrId = result.map(item => item?.Product?.id)
       res.json(pdArrId)
   } catch (err) {

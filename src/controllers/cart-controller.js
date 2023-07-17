@@ -40,7 +40,6 @@ exports.checkout = async (req, res, next) => {
     }
 }
 
-
 exports.updateQuantity = async (req, res, next) => {
     try {
         const {userId, productId, quantity} = req.body;

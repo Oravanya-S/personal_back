@@ -1,6 +1,7 @@
 const fs = require("fs");
 const cloudinary = require("../config/cloudinary");
 const adminService = require('../services/admin-service')
+const modelService = require('../services/model-service')
 const uploadService = require("../services/upload-service");
 const { Product, sequelize } = require("../models");
 const createError = require('../utils/create-error');
@@ -172,11 +173,12 @@ exports.AddProduct = async (req, res, next) => {
             console.log(result.secure_url)
         }
         const product = await adminService.AddProduct(value)
+        const productById = await modelService.getProductById(product.id)
         const results = await stripe.products.create({
-            name: product.id,
+            name: `${productById.Model.name} ${productById.Color.name}`,
             default_price_data: {
               currency: "THB",
-              unit_amount_decimal: value.price,
+              unit_amount_decimal: Number(value.price*100),
             },
             images: [product.image],
           });
