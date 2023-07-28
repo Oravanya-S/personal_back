@@ -9,6 +9,15 @@ const { QueryTypes } = require("sequelize");
 const stripe = require("stripe")(
     process.env.STRIPE_KEY
 );
+
+exports.getGroupColorWithColor = async (req, res, next) => {
+    try {
+        const result = await adminService.getGroupColorWithColor()
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
 exports.getGroupColor = async (req, res, next) => {
     try {
         const result = await adminService.getGroupColor()

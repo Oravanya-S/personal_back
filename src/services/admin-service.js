@@ -9,6 +9,14 @@ const {
 } = require("../models");
 const { fn, Op, literal, col, where, QueryTypes } = require("sequelize");
 
+exports.getGroupColorWithColor = () =>
+  GroupColor.findAll({
+    order: [["createdAt", "DESC"]],
+    include: {
+      model: Color
+    }
+  });
+
 //GroupColor
 exports.getGroupColor = () =>
   GroupColor.findAll({

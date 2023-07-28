@@ -4,6 +4,7 @@ const adminController = require('../controllers/admin-controller')
 const upload = require('../middlewares/upload')
 const router = express.Router()
 
+router.get('/groupcolorwithcolor', adminController.getGroupColorWithColor)
 router.get('/groupcolor', adminController.getGroupColor)
 router.get('/colors', adminController.getColors)
 router.post('/color', adminController.AddColor)
