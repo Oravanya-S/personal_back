@@ -47,6 +47,16 @@ exports.AddColor = async (req, res, next) => {
     }
 }
 
+exports.AddColour = async (req, res, next) => {
+    try {
+        const value = req.body
+        const result = await adminService.AddColour(value)
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
+
 exports.UpdateColor = async (req, res, next) => {
     try {
         const {id} = req.params
@@ -58,10 +68,35 @@ exports.UpdateColor = async (req, res, next) => {
     }
 }
 
+exports.UpdateColour = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const payload = req.body
+        console.log("payload", payload)
+        const result = await adminService.UpdateColour(id, payload)
+        console.log("result", result)
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
+
 exports.DeleteColor = async (req, res, next) => {
     try {
         const {id} = req.params
         const result = await adminService.DeleteColor(id)
+        res.json(result)
+    } catch (err) {
+        next(err)
+    }
+}
+
+exports.DeleteColour = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        console.log("DDDDdddddd", id)
+        const result = await adminService.DeleteColour(id)
+        console.log("res", result)
         res.json(result)
     } catch (err) {
         next(err)

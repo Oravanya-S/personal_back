@@ -13,8 +13,8 @@ exports.getGroupColorWithColor = () =>
   GroupColor.findAll({
     order: [["createdAt", "DESC"]],
     include: {
-      model: Color
-    }
+      model: Color,
+    },
   });
 
 //GroupColor
@@ -31,13 +31,28 @@ exports.getColors = () =>
   });
 
 exports.AddColor = (color) => Color.create(color);
+exports.AddColour = (color) => Color.create(color);
 exports.UpdateColor = (id, payload) =>
   Color.update(payload, {
     where: {
       id: id,
     },
   });
+
+exports.UpdateColour = (id, payload) =>
+  Color.update(payload, {
+    where: {
+      id: id,
+    },
+  });
 exports.DeleteColor = (id) =>
+  Color.destroy({
+    where: {
+      id: id,
+    },
+  });
+
+exports.DeleteColour = (id) =>
   Color.destroy({
     where: {
       id: id,
@@ -145,55 +160,68 @@ exports.getDashboardGroupColor = async (startDate, endDate) => {
     `SELECT gc.id, gc.name, gc.hexcode, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN colors c ON p.color_id = c.id LEFT JOIN group_colors gc ON c.group_color_id = gc.id  WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}' group by gc.id order by total_quantity desc`,
     { type: QueryTypes.SELECT }
   );
-  if(dashboardGroupColor.length > 6) {
-    const mainDashboardGroupColor = dashboardGroupColor.slice(0,5)
-    const otherDashboardGroupColor = dashboardGroupColor.slice(5)
-    const otherTotal = otherDashboardGroupColor.reduce((acc, el) => acc+ +el.total_quantity, 0)
-    mainDashboardGroupColor.push({id:0, name: "Others", hexcode: "#eeeeee", total_quantity: otherTotal})
-    return(mainDashboardGroupColor)
-
+  if (dashboardGroupColor.length > 6) {
+    const mainDashboardGroupColor = dashboardGroupColor.slice(0, 5);
+    const otherDashboardGroupColor = dashboardGroupColor.slice(5);
+    const otherTotal = otherDashboardGroupColor.reduce(
+      (acc, el) => acc + +el.total_quantity,
+      0
+    );
+    mainDashboardGroupColor.push({
+      id: 0,
+      name: "Others",
+      hexcode: "#eeeeee",
+      total_quantity: otherTotal,
+    });
+    return mainDashboardGroupColor;
   }
-  return(dashboardGroupColor);
+  return dashboardGroupColor;
 };
 
 exports.getDashboardModel = async (startDate, endDate) => {
-    const dashboardModel = await sequelize.query(
-      `SELECT m.id, m.name, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN models m ON p.model_id = m.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}' group by m.id order by total_quantity desc`,
-      { type: QueryTypes.SELECT }
+  const dashboardModel = await sequelize.query(
+    `SELECT m.id, m.name, SUM(oi.quantity) AS total_quantity FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id LEFT JOIN models m ON p.model_id = m.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}' group by m.id order by total_quantity desc`,
+    { type: QueryTypes.SELECT }
+  );
+  if (dashboardModel.length > 6) {
+    const mainDashboardModel = dashboardModel.slice(0, 5);
+    const otherDashboardModel = dashboardModel.slice(5);
+    const otherTotal = otherDashboardModel.reduce(
+      (acc, el) => acc + +el.total_quantity,
+      0
     );
-    if(dashboardModel.length > 6) {
-      const mainDashboardModel = dashboardModel.slice(0,5)
-      const otherDashboardModel = dashboardModel.slice(5)
-      const otherTotal = otherDashboardModel.reduce((acc, el) => acc+ +el.total_quantity, 0)
-      mainDashboardModel.push({id:0, name: "Others", total_quantity: otherTotal})
-      return(mainDashboardModel)
-  
-    }
-    return(dashboardModel);
-  };
+    mainDashboardModel.push({
+      id: 0,
+      name: "Others",
+      total_quantity: otherTotal,
+    });
+    return mainDashboardModel;
+  }
+  return dashboardModel;
+};
 
 exports.getDashboardEarning = async (startDate, endDate) => {
-    const Earning = await sequelize.query(
-      `SELECT SUM(oi.quantity*p.price) AS total_earning FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
-      { type: QueryTypes.SELECT }
-    );
-    return(Earning[0]);
+  const Earning = await sequelize.query(
+    `SELECT SUM(oi.quantity*p.price) AS total_earning FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
+    { type: QueryTypes.SELECT }
+  );
+  return Earning[0];
 };
 
 exports.getDashboardNumBag = async (startDate, endDate) => {
-    const NumBag = await sequelize.query(
-      `SELECT SUM(oi.quantity) AS total_bag FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
-      { type: QueryTypes.SELECT }
-    );
-    return(NumBag[0]);
+  const NumBag = await sequelize.query(
+    `SELECT SUM(oi.quantity) AS total_bag FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE DATE(oi.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
+    { type: QueryTypes.SELECT }
+  );
+  return NumBag[0];
 };
 
 exports.getDashboardCart = async (startDate, endDate) => {
-    const NumCart = await sequelize.query(
-      `SELECT SUM(c.quantity) AS total_cart FROM carts c WHERE DATE(c.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
-      { type: QueryTypes.SELECT }
-    );
-    return(NumCart[0]);
+  const NumCart = await sequelize.query(
+    `SELECT SUM(c.quantity) AS total_cart FROM carts c WHERE DATE(c.created_at) BETWEEN '${startDate}' AND '${endDate}'`,
+    { type: QueryTypes.SELECT }
+  );
+  return NumCart[0];
 };
 
 exports.getDashboardFav = async (startDate, endDate) => {
